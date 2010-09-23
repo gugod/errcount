@@ -1,0 +1,1 @@
+["DBI:mysql:database=errcount_production", "erruser", "errpassword"]
