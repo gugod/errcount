@@ -56,14 +56,12 @@ else {
 my $app = sub {
     my $env = shift;
     my $req = Plack::Request->new($env);
-    my $count = int(rand(1048576)) - 524288;
-
-    if ($env->{'HTTP_REFERER'}) {
+    my $count = $env->{'HTTP_REFERER'} ? do {
         my $uri = URI->new($env->{'HTTP_REFERER'});
         my $site = $uri->host;
 
-        $count = Errcount->get($site);
-    }
+        Errcount->get($site);
+    } : int(rand(1048576)) - 524288;
 
     my $res = $req->new_response(200);
     $res->content_type("text/javascript");
